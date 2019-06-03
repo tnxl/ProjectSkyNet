@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#F7F7F7"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:paddingTop="5dp"
+            android:id="@+id/radioButton1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawableTop="@drawable/home_select"
+            android:gravity="center"
+            android:textSize="10sp"
+            android:text="首页"
+            android:textColor="#11CD6E"/>
+
+        <RadioButton
+            android:paddingTop="5dp"
+            android:id="@+id/radioButton2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/video_select"
+            android:gravity="center"
+            android:textSize="10sp"
+            android:text="视频"
+            android:textColor="@android:color/darker_gray"/>
+
+        <RadioButton
+            android:paddingTop="5dp"
+            android:id="@+id/radioButton3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/find_select"
+            android:gravity="center"
+            android:textSize="10sp"
+            android:text="发现"
+            android:textColor="@android:color/darker_gray"/>
+
+        <RadioButton
+            android:paddingTop="5dp"
+            android:id="@+id/radioButton4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/mine_select"
+            android:gravity="center"
+            android:textSize="10sp"
+            android:text="我的"
+            android:textColor="@android:color/darker_gray"/>
+    </RadioGroup>
+
+</LinearLayout>
