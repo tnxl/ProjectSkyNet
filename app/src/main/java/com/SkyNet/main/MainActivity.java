@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -432,7 +433,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
+    //视频播放
+    public void playVideo(View view){
+        Intent intent = new Intent(this,PlayVideoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("name",((Button)view).getText().toString());
+        bundle.putString("path","https://gss3.baidu.com/6LZ0ej3k1Qd3ote6lo7D0j9wehsv/tieba-smallvideo/25330672_24f6515023b92700bb82f892a4ab7d45.mp4");
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 
 
 

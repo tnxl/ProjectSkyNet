@@ -88,6 +88,7 @@
                     android:drawableTop="@drawable/t1"
                     android:layout_margin="5dp"
                     android:text="【夸张动画】动画世界里的张"
+                    android:onClick="playVideo"
                     />
                 <Button
                     android:layout_width="165dp"
@@ -97,6 +98,7 @@
                     android:drawableTop="@drawable/t3"
                     android:layout_margin="5dp"
                     android:text="【美番】【熟肉片段】地狱客栈Hazbin Hotel-'The Spider in KinkyBoots'"
+                    android:onClick="playVideo"
                     />
                 <Button
                     android:layout_width="165dp"
@@ -106,6 +108,7 @@
                     android:drawableTop="@drawable/t4"
                     android:layout_margin="5dp"
                     android:text="【PV】【CYaRon!】【夜空是否全然知晓？】"
+                    android:onClick="playVideo"
                     />
                 <Button
                     android:layout_width="165dp"
@@ -115,6 +118,7 @@
                     android:drawableTop="@drawable/t5"
                     android:layout_margin="5dp"
                     android:text="【PV】【CYaRon!】【夜空是否全然知晓？】"
+                    android:onClick="playVideo"
                     />
                 <Button
                     android:layout_width="165dp"
@@ -124,6 +128,7 @@
                     android:drawableTop="@drawable/t6"
                     android:layout_margin="5dp"
                     android:text="【PV】【CYaRon!】【夜空是否全然知晓？】"
+                    android:onClick="playVideo"
                     />
                 <Button
                     android:layout_width="165dp"
@@ -133,6 +138,7 @@
                     android:drawableTop="@drawable/t7"
                     android:layout_margin="5dp"
                     android:text="【神楽七奈/カグラナナ】【在深夜】初次直播【非常抱歉】"
+                    android:onClick="playVideo"
                     />
                 <Button
                     android:layout_width="165dp"
@@ -142,6 +148,7 @@
                     android:drawableTop="@drawable/t8"
                     android:layout_margin="5dp"
                     android:text="【糖分开箱】 MegaHouse海贼王 15th 糖果乔巴手办 Ver.OT动画综合"
+                    android:onClick="playVideo"
                     />
                 <Button
                     android:layout_width="165dp"
@@ -151,6 +158,7 @@
                     android:drawableTop="@drawable/t10"
                     android:layout_margin="5dp"
                     android:text="【好大の魔法师】要和姐姐一起喝一杯吗♡~"
+                    android:onClick="playVideo"
                     />
 
             </GridLayout>

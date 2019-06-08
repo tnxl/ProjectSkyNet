@@ -1,6 +1,7 @@
 package com.SkyNet.layout;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.SkyNet.R;
 import com.SkyNet.main.MainActivity;
+import com.SkyNet.main.PlayVideoActivity;
 import com.SkyNet.util.LooperPagerAdapter;
 import com.SkyNet.util.MyViewPager;
 
@@ -130,6 +133,8 @@ public class HomeFragment extends Fragment implements MyViewPager.OnViewPagerTou
     public void onPagerTouch(boolean isTouch) {
         this.isTouch = isTouch;
     }
+
+
 
 
 
