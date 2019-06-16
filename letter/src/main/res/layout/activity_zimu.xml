@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ZiMuActivity">
+
+    <ListView
+        android:id="@+id/myListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/MainTitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#40000000"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/MainTitleTxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="20sp"
+            android:textColor="#912CEE" />
+    </LinearLayout>
+
+    <com.example.myletterapp.MyLetterView
+        android:id="@+id/myZiMuLetterView1"
+        android:layout_width="35dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="#4d000000" />
+
+</RelativeLayout>

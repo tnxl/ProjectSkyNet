@@ -1,20 +1,23 @@
 package com.SkyNet.layout;
 
 
-import android.annotation.SuppressLint;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.SkyNet.R;
-
-import java.util.List;
+import com.example.administrator.recorddemo.RecorderActivity;
+import com.example.ice.coursetable.CameraActivity;
+import com.example.myletterapp.ZiMuActivity;
+import com.example.mysensor.SensorActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +31,7 @@ public class FindFragment extends Fragment {
     private View view;
     private String list1[] = new String[]{"朋友圈"};
     private String list2[] = new String[]{"扫一扫","摇一摇"};
-    private String list3[] = new String[]{"飘一飘","买一买","玩一玩"};
+    private String list3[] = new String[]{"附近的人","语音备忘录","玩一玩"};
     private String list4[] = new String[]{"扭一扭","舔一舔","泡一泡"};
 
     public FindFragment() {
@@ -59,7 +62,67 @@ public class FindFragment extends Fragment {
         listView3.setAdapter(adapter3);
         ArrayAdapter<String> adapter4 = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,list4);
         listView4.setAdapter(adapter4);
+
+        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //朋友圈
+                Intent intent = new Intent(getContext(), ZiMuActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        //扫一扫
+                        handIntent = new Intent(getActivity(), CameraActivity.class);
+                        handIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getActivity().getApplicationContext().startActivity(handIntent);
+                        break;
+                    case 1:
+                        //摇一摇
+                        handIntent = new Intent(getActivity(),SensorActivity.class);
+                        handIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getActivity().getApplicationContext().startActivity(handIntent);
+                        break;
+                }
+            }
+        });
+
+        listView3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        //附近的人
+                        Intent intent = new Intent(getContext(), baidumapsdk.demo.BMapApiDemoMain.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        //语音备忘录
+                        Intent intent1 = new Intent(getContext(), RecorderActivity.class);
+                        startActivity(intent1);
+                        break;
+                }
+            }
+        });
     }
+    Message msg = new Message();
+    Intent handIntent;
+    public Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 0:
+                    break;
+                case 1:
+                    break;
+            }
+        }
+    };
 
 //    class ListViewAdapter extends android.widget.BaseAdapter {
 //        Context context;

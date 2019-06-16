@@ -177,7 +177,7 @@ public class HomeFragment extends Fragment implements MyViewPager.OnViewPagerTou
 //
 //        gestureDetector = new GestureDetector(simpleOnGestureListener);
 //
-//        MainActivity.MyOnTouchListener myOnTouchListener = new MainActivity.MyOnTouchListener() {
+//        SensorActivity.MyOnTouchListener myOnTouchListener = new SensorActivity.MyOnTouchListener() {
 //            @Override
 //            public boolean onTouch(MotionEvent ev) {
 //                gestureDetector.onTouchEvent(ev);
@@ -185,7 +185,7 @@ public class HomeFragment extends Fragment implements MyViewPager.OnViewPagerTou
 //            }
 //        };
 //
-//        ((MainActivity) getActivity()).registerMyOnTouchListener(myOnTouchListener);
+//        ((SensorActivity) getActivity()).registerMyOnTouchListener(myOnTouchListener);
 //    }
 
 }

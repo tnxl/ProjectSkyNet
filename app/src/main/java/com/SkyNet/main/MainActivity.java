@@ -2,9 +2,14 @@ package com.SkyNet.main;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -33,16 +38,19 @@ import com.SkyNet.R;
 import com.SkyNet.layout.FindFragment;
 import com.SkyNet.layout.HomeFragment;
 import com.SkyNet.layout.MineFragment;
-import com.SkyNet.layout.VideoFragment;
+import com.SkyNet.layout.NewsFragment;
 import com.SkyNet.util.AnimUtil;
+import com.SkyNet.util.ImageUtils;
 import com.SkyNet.util.PageViewAdapter;
+import com.SkyNet.view.ConfirmDialogQuit;
+import com.SkyNet.view.PersonInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final String TAG = "MainActivity";
+    private final String TAG = "SensorActivity";
 
     private ViewPager viewPager;
     //存放Fragment的容器
@@ -57,11 +65,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //FragmentManager
     private FragmentManager fragmentManager;
     //标题名称
-    String titleName[] = new String[]{"首页", "视频", "发现", "我的"};
+    String titleName[] = new String[]{"首页", "新闻", "发现", "我的"};
     //搜索按钮
     private ImageView search;
     //侧滑返回按钮
     private ImageView iv_close;
+
+    private Bundle bundle;
+    private Button btn_logout;
 
 
     @Override
@@ -93,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         iv_add = findViewById(R.id.iv_add);
         //页面标题数组
         titleTextView = (TextView) findViewById(R.id.top_title);
-        search = (ImageView)findViewById(R.id.iv_search);
+        search = (ImageView) findViewById(R.id.iv_search);
         //右上角加号按钮
         mPopupWindow = new PopupWindow(this);
         //动画效果
@@ -111,10 +122,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /**
          * 侧滑栏
          */
-        drawerLayout = (DrawerLayout)findViewById(R.id.main_drawer_layout);
-        linearLayout = (LinearLayout)findViewById(R.id.drawer_layout);
-        leftlist = (ListView)findViewById(R.id.left_list);
-        iv_close = (ImageView)findViewById(R.id.iv_close);
+        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+        linearLayout = (LinearLayout) findViewById(R.id.drawer_layout);
+        leftlist = (ListView) findViewById(R.id.left_list);
+        iv_close = (ImageView) findViewById(R.id.iv_close);
+        myBroadcast = new MyBroadcast();
+        intentFilter = new IntentFilter("NEW_LIFEFORM");
+
+        img_touxiang = findViewById(R.id.left_touxiang);
+        btn_edit = findViewById(R.id.left_btn);
+        tx_id = findViewById(R.id.left_id);
+
+
+        btn_logout = ((Button) findViewById(R.id.btn_logout));
     }
 
     private void addListener() {
@@ -141,8 +161,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(MainActivity.this,"Search",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this,SearchActivity.class);
+//                Toast.makeText(SensorActivity.this,"Search",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
             }
         });
@@ -153,12 +173,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 drawerLayout.closeDrawer(Gravity.START);
             }
         });
+
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ConfirmDialogQuit confirmDialog = new ConfirmDialogQuit(MainActivity.this);
+                confirmDialog.setOnDialogClickListener(new ConfirmDialogQuit.OnDialogClickListener() {
+                    @Override
+                    public void onOKClick() {
+
+                        Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                        startActivity(intent);
+                        confirmDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onCancelClick() {
+                        confirmDialog.dismiss();
+                    }
+                });
+                confirmDialog.setCancelable(true);//点击空白处消失
+                confirmDialog.show();
+
+            }
+        });
+
+        btn_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PersonInfoActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     //初始化fragment容器
     private void initFragmentList() {
         Fragment home = new HomeFragment();
-        Fragment video = new VideoFragment();
+        Fragment video = new NewsFragment();
         Fragment find = new FindFragment();
         Fragment mine = new MineFragment();
         list.add(home);
@@ -185,25 +238,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
 
-            private void setColor(int i){
-                int name = 0;
-                int names[] = new int[]{R.id.radioButton1,R.id.radioButton2 ,
-                R.id.radioButton3,R.id.radioButton4};
-                for (int j=0;j<4;j++){
-                    RadioButton radioButtonDemo = findViewById(names[j]);
-                    radioButtonDemo.setTextColor(Color.parseColor("#aaaaaa"));
-                }
-                name = names[i];
-                RadioButton radioButton = findViewById(name);
-                radioButton.setTextColor(Color.parseColor("#11CD6E"));
-                radioButton.setChecked(true);
-            }
         });
         //添加viewpager的适配器
         viewPager.setAdapter(pageViewAdapter);
         viewPager.setCurrentItem(0);
         titleTextView.setText(titleName[0]);
 
+    }
+
+    //设置底部栏改变图标样式
+    private void setColor(int i) {
+        int name = 0;
+        int names[] = new int[]{R.id.radioButton1, R.id.radioButton2,
+                R.id.radioButton3, R.id.radioButton4};
+        for (int j = 0; j < 4; j++) {
+            RadioButton radioButtonDemo = findViewById(names[j]);
+            radioButtonDemo.setTextColor(Color.parseColor("#aaaaaa"));
+        }
+        name = names[i];
+        RadioButton radioButton = findViewById(name);
+        radioButton.setTextColor(Color.parseColor("#11CD6E"));
+        radioButton.setChecked(true);
     }
 
     @Override
@@ -251,15 +306,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         for (MyOnTouchListener listener : onTouchListeners) {
-            if(listener != null) {
+            if (listener != null) {
                 listener.onTouch(ev);
             }
         }
         return super.dispatchTouchEvent(ev);
     }
+
     public void registerMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
         onTouchListeners.add(myOnTouchListener);
     }
+
     public void unregisterMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
         onTouchListeners.remove(myOnTouchListener);
     }
@@ -362,14 +419,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView leftlist;
     private boolean flag;
 
-    public boolean getFlag(){
+    public boolean getFlag() {
         return flag;
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    public void initLayout(){
+    public void initLayout() {
 
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,titleName);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, titleName);
         leftlist.setAdapter(adapter1);
 
         leftlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -434,15 +491,86 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //视频播放
-    public void playVideo(View view){
-        Intent intent = new Intent(this,PlayVideoActivity.class);
+    public void playVideo(View view) {
+        Intent intent = new Intent(MainActivity.this, PlayVideoActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("name",((Button)view).getText().toString());
-        bundle.putString("path","https://gss3.baidu.com/6LZ0ej3k1Qd3ote6lo7D0j9wehsv/tieba-smallvideo/25330672_24f6515023b92700bb82f892a4ab7d45.mp4");
+        bundle.putString("name", ((Button) view).getText().toString());
+        bundle.putString("path", "https://gss3.baidu.com/6LZ0ej3k1Qd3ote6lo7D0j9wehsv/tieba-smallvideo/25330672_24f6515023b92700bb82f892a4ab7d45.mp4");
         intent.putExtras(bundle);
         startActivity(intent);
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        registerReceiver(myBroadcast,intentFilter);
 
+    }
+
+    ImageView img_touxiang;
+    TextView tx_id;
+    Button btn_edit;
+
+    private Uri uri;
+    String path;
+    int requiredWidth = 0;
+    int requiredHeight = 0;
+
+    MyBroadcast myBroadcast;
+    IntentFilter intentFilter;
+
+    class MyBroadcast extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            bundle = intent.getExtras();
+            String id = bundle.getString("userid");
+            id = "ID: "+id;
+            tx_id.setText(id);
+            if (intent.getStringExtra("uri")!=null){
+                uri = Uri.parse(intent.getStringExtra("uri"));
+                path = intent.getStringExtra("path");
+                requiredWidth = intent.getIntExtra("width",0);
+                requiredHeight = intent.getIntExtra("height",0);
+                Bitmap bm = ImageUtils.decodeSampledBitmapFromDisk(path, requiredWidth, requiredHeight);
+                img_touxiang.setImageBitmap(bm);
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(myBroadcast);
+    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        switch(requestCode){
+//            case 4:
+//                viewPager.setCurrentItem(3);
+//                setColor(3);
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        bundle = data.getExtras();
+//                        if (bundle!=null){
+//                            MineFragment mineFragment = new MineFragment();
+//                            mineFragment.setArguments(bundle);
+//                            FragmentManager fragmentManager = getSupportFragmentManager();
+//                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                            fragmentTransaction.replace(R.id.frag_mine,mineFragment);
+//                            fragmentTransaction.commit();
+//                        }
+//                    }
+//                });
+//                break;
+//            case 1:
+//                System.out.println("SensorActivity");
+//                Toast.makeText(this, data.getExtras().getString("userid").toString(), Toast.LENGTH_SHORT).show();
+//                break;
+//        }
+//    }
 }

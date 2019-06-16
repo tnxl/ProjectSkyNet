@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".layout.NewsFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <!--这个是主界面的布局文件的导航栏控件，也就是头条。娱乐这样的-->
+        <com.astuetz.PagerSlidingTabStrip
+            android:id="@+id/ps_tab"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:pstsDividerColor="@color/colorPrimary"
+            app:pstsIndicatorColor="@color/colorPrimary" />
+        <!--这个是主界面的布局文件的详细控件，和导航栏是一一对应的-->
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_news"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+
+
+</FrameLayout>
